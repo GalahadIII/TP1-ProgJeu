@@ -22,16 +22,19 @@ public class AnimationController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Mathf.Abs(m_RB.velocity.x) > 0.01)
+        if (m_MC.grounded)
         {
-            newState = LightAnimState.RUN;
-        }
+            if (Mathf.Abs(m_RB.velocity.x) > 0.01)
+            {
+                newState = LightAnimState.RUN;
+            }
 
-        if (m_RB.velocity.x.Equals(0))
-        {
-            newState = LightAnimState.IDLE_BLINK;
+            if (m_RB.velocity.x.Equals(0))
+            {
+                newState = LightAnimState.IDLE_BLINK;
+            }
         }
-
+        
         if (m_RB.velocity.y > 0.01)
         {
             newState = LightAnimState.JUMP;

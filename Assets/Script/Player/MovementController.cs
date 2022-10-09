@@ -90,6 +90,9 @@ public class MovementController : MonoBehaviour
         // update timer
         lastGroundedTime -= Time.deltaTime;
         lastJumpTime -= Time.deltaTime;
+        
+        Debug.Log(lastGroundedTime);
+        Debug.Log(lastJumpTime);
 
         // catch input from the player
         jumpInput = Input.GetButtonDown("Jump");
@@ -102,7 +105,11 @@ public class MovementController : MonoBehaviour
 
         if (jumpInput)
         {
-            Jump();
+            lastJumpTime = jumpBufferTime;
+            if (lastGroundedTime > 0 && lastJumpTime > 0 && !jumping)
+            {
+                Jump();
+            }
         }
     }
 
@@ -160,14 +167,9 @@ public class MovementController : MonoBehaviour
     // Jump
     private void Jump()
     {
-        if (grounded || (lastGroundedTime > 0 && lastJumpTime > 0 && !jumping))
-        {
-            // the jump
-            m_RB.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        }
-
+        // the jump
+        m_RB.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         // on jump actions
-        lastJumpTime = jumpBufferTime;
         jumping = true;
     }
 
@@ -175,11 +177,9 @@ public class MovementController : MonoBehaviour
     {
         if (m_RB.velocity.y > 0 && jumping)
         {
-            // reduces current y velocity by amount (0 - 1)
+            // reduces current y velocity by amount[0-1] (higher the CutMultiplier the less sensitive to input it becomes)
             m_RB.AddForce(Vector2.down * m_RB.velocity.y * (1 - jumpCutMultiplier), ForceMode2D.Impulse);
         }
-
-        lastJumpTime = 0;
     }
 
     private void FallingGravity()
