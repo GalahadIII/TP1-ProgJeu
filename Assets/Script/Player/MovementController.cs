@@ -48,9 +48,8 @@ public class MovementController : MonoBehaviour
 
     #region Components
 
-    private Rigidbody2D m_RB;
-    private CapsuleCollider2D m_PlayerCollider;
-    private AnimationController m_AnimController;
+    private PlayerController player;
+    public Rigidbody2D m_RB;
 
     #endregion
 
@@ -66,14 +65,14 @@ public class MovementController : MonoBehaviour
     // Awake is called before start
     private void Awake()
     {
-        m_RB = GetComponent<Rigidbody2D>();
-        m_PlayerCollider = GetComponent<CapsuleCollider2D>();
-        m_AnimController = GetComponent<AnimationController>();
     }
 
     // Start is called before the first frame update
     private void Start()
     {
+        player = PlayerController.instance;
+        m_RB = player.m_RB;
+        
         gravityScale = m_RB.gravityScale;
     }
 
@@ -90,9 +89,6 @@ public class MovementController : MonoBehaviour
         // update timer
         lastGroundedTime -= Time.deltaTime;
         lastJumpTime -= Time.deltaTime;
-        
-        Debug.Log(lastGroundedTime);
-        Debug.Log(lastJumpTime);
 
         // catch input from the player
         jumpInput = Input.GetButtonDown("Jump");
@@ -106,7 +102,7 @@ public class MovementController : MonoBehaviour
         if (jumpInput)
         {
             lastJumpTime = jumpBufferTime;
-            if (lastGroundedTime > 0 && lastJumpTime > 0 && !jumping)
+            if (lastGroundedTime > 0 && lastJumpTime > 0 && !jumping && !player.attacking)
             {
                 Jump();
             }
@@ -116,7 +112,11 @@ public class MovementController : MonoBehaviour
     // Fixed update is called for physics updates
     private void FixedUpdate()
     {
-        Movement();
+        Debug.Log(player.attacking);
+        if (!PlayerController.instance.attacking)
+        {
+            Movement();    
+        }
         FallingGravity();
     }
 
