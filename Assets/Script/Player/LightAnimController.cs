@@ -11,7 +11,6 @@ public class LightAnimController : MonoBehaviour
     public Animator m_Anim;
 
     private string lastState;
-    private PlayerController player;
     private Rigidbody2D m_RB;
     private MovementController m_MC;
     
@@ -26,13 +25,11 @@ public class LightAnimController : MonoBehaviour
 
     private void Start()
     {
-        player = GetComponent<PlayerController>();
-        
         GameObject lightChild = GameObject.Find("Light");
         m_Anim = lightChild.GetComponent<Animator>();
 
-        m_RB = player.m_RB;
-        m_MC = player.m_MC;
+        m_RB = GetComponent<Rigidbody2D>();
+        m_MC = GetComponent<MovementController>();
     }
 
     private void Update()
@@ -44,12 +41,12 @@ public class LightAnimController : MonoBehaviour
     {
         if (m_MC.grounded)
         {
-            if (Mathf.Abs(m_RB.velocity.x) > 0.01)
+            if (Mathf.Abs(m_RB.velocity.x) > 0.3)
             {
                 state = PlayerAnimState.RUN;
             }
             
-            if (m_RB.velocity.x.Equals(0) && m_RB.velocity.y.Equals(0) && !player.attacking)
+            if (Mathf.Abs(m_RB.velocity.x) < 0.3 && m_RB.velocity.y == 0)
             {
                 state = Idle();
             }

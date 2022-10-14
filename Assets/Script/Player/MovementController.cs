@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
+    public static MovementController instance;
+    
     #region Var
 
     #region Movement
@@ -14,6 +16,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float decceleration = 6f;
     [SerializeField] private float velPower = 1.2f;
     [SerializeField] private float friction = 0.2f;
+    
 
     #endregion
 
@@ -47,8 +50,7 @@ public class MovementController : MonoBehaviour
     #endregion
 
     #region Components
-
-    private PlayerController player;
+    
     public Rigidbody2D m_RB;
 
     #endregion
@@ -65,13 +67,13 @@ public class MovementController : MonoBehaviour
     // Awake is called before start
     private void Awake()
     {
+        instance = this;
     }
 
     // Start is called before the first frame update
     private void Start()
     {
-        player = PlayerController.instance;
-        m_RB = player.m_RB;
+        m_RB = GetComponent<Rigidbody2D>();
         
         gravityScale = m_RB.gravityScale;
     }
@@ -81,7 +83,8 @@ public class MovementController : MonoBehaviour
     {
         // various checks
         grounded = IsGrounded();
-        if (jumping && m_RB.velocity.y < 0)
+        
+        if (jumping && m_RB.velocity.y <= 0)
         {
             jumping = false;
         }
@@ -102,21 +105,19 @@ public class MovementController : MonoBehaviour
         if (jumpInput)
         {
             lastJumpTime = jumpBufferTime;
-            if (lastGroundedTime > 0 && lastJumpTime > 0 && !jumping && !player.attacking)
+            if (lastGroundedTime > 0 && lastJumpTime > 0 && !jumping)
             {
                 Jump();
             }
         }
+
+
     }
 
     // Fixed update is called for physics updates
     private void FixedUpdate()
     {
-        Debug.Log(player.attacking);
-        if (!PlayerController.instance.attacking)
-        {
-            Movement();    
-        }
+        Movement();
         FallingGravity();
     }
 

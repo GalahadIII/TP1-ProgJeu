@@ -1,82 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool darkForm = false;
-    
-    public bool attacking = false;
-
-    #region Componenents
-
-    public static PlayerController instance;
     private GameObject lightChild;
-    private GameObject darkChild;
-    public Rigidbody2D m_RB;
+    //private GameObject darkChild;
 
+    //private SpriteRenderer m_DarkSR;
     private SpriteRenderer m_LightSR;
-    private SpriteRenderer m_DarkSR;
-    
-    public MovementController m_MC;
 
-    #endregion
+    //private Animator m_DarkAnim;
+    private Animator m_LightAnim;
 
-    private void Awake()
+    void Awake()
     {
-        instance = this;
-        
-        m_RB = GetComponent<Rigidbody2D>();
-        m_MC = GetComponent<MovementController>();
-        
-
+        lightChild = GameObject.Find("Light");
+        //darkChild = GameObject.Find("Dark");
     }
     
     // Start is called before the first frame update
-    private void Start()
+    void Start()
     {
-        lightChild = GameObject.Find("Light");
-        darkChild = GameObject.Find("Dark");
-        
         m_LightSR = lightChild.GetComponent<SpriteRenderer>();
-        m_DarkSR = darkChild.GetComponent<SpriteRenderer>();
+        //m_DarkSR = darkChild.GetComponent<SpriteRenderer>();
+
+        m_LightAnim = lightChild.GetComponent<Animator>();
+        //m_DarkAnim = darkChild.GetComponent<Animator>();
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Attack();
-        }
-
-        if (Input.GetButtonDown("Fire2"))
-        {
-            //Transform();
-        }
-    }
-
-    private void Attack()
-    {
-        if (!attacking && m_RB.velocity.x == 0 && m_RB.velocity.y == 0)
-        {
-            attacking = true;
-        }
-    }
-
-    public void Transform()
-    {
-        if (!darkForm)
-        {
-            darkForm = true;
-            m_DarkSR.enabled = true;
-            m_LightSR.enabled = false;
-        }
-        else
-        {
-            darkForm = false;
-            m_LightSR.enabled = true;
-            m_DarkSR.enabled = false;
-        }
+        
     }
 }
