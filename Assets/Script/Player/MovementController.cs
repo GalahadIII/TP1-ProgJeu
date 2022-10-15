@@ -16,7 +16,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float decceleration = 6f;
     [SerializeField] private float velPower = 1.2f;
     [SerializeField] private float friction = 0.2f;
-    
+    public bool movementLocked;
 
     #endregion
 
@@ -117,7 +117,15 @@ public class MovementController : MonoBehaviour
     // Fixed update is called for physics updates
     private void FixedUpdate()
     {
-        Movement();
+        if (!movementLocked)
+        {
+            Movement();
+        }
+        else
+        {
+            m_RB.velocity = Vector2.zero;
+        }
+        
         FallingGravity();
     }
 

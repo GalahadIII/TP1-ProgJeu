@@ -7,34 +7,35 @@ using Random = UnityEngine.Random;
 
 public class LightAnimController : MonoBehaviour
 {
-    public static LightAnimController instance;
+    private GameObject lightChild;
+
     public Animator m_Anim;
 
     private string lastState;
     private Rigidbody2D m_RB;
     private MovementController m_MC;
-    
+    private PlayerController m_PC;
+
     private string state;
     private float timeSpentIdle;
     public bool idle;
 
     private void Awake()
     {
-        instance = this;
+        lightChild = GameObject.Find("Light");
     }
 
     private void Start()
     {
-        GameObject lightChild = GameObject.Find("Light");
         m_Anim = lightChild.GetComponent<Animator>();
 
         m_RB = GetComponent<Rigidbody2D>();
         m_MC = GetComponent<MovementController>();
+        m_PC = GetComponent<PlayerController>();
     }
 
     private void Update()
     {
-
     }
 
     private void FixedUpdate()
@@ -45,12 +46,15 @@ public class LightAnimController : MonoBehaviour
             {
                 state = PlayerAnimState.RUN;
             }
-            
+
             if (Mathf.Abs(m_RB.velocity.x) < 0.3 && m_RB.velocity.y == 0)
             {
                 state = Idle();
             }
-            else { idle = false; }
+            else
+            {
+                idle = false;
+            }
         }
 
         if (m_RB.velocity.y > 0.01)
@@ -62,10 +66,21 @@ public class LightAnimController : MonoBehaviour
         {
             state = PlayerAnimState.FALL;
         }
-        
+
+        if (m_PC.isAttacking)
+        {
+            state = m_PC.currentAttackStage switch
+            {
+                1 => PlayerAnimState.ATTACK1,
+                2 => PlayerAnimState.ATTACK2,
+                3 => PlayerAnimState.ATTACK3,
+                _ => throw new ArgumentOutOfRangeException(nameof(m_PC.currentAttackStage)),
+            };
+        }
+
         // Execution
         if (state == lastState) return;
-        
+
         m_Anim.Play(state);
         lastState = state;
     }
@@ -82,7 +97,7 @@ public class LightAnimController : MonoBehaviour
         if (timeSpentIdle > 7)
         {
             int random = Random.Range(1, 15 + 1);
-            
+
             m_Anim.SetTrigger(random == 1 ? "LookBehind" : "Blink");
             timeSpentIdle = 0;
         }
@@ -91,4 +106,5 @@ public class LightAnimController : MonoBehaviour
 
         return PlayerAnimState.IDLE;
     }
+
 }
