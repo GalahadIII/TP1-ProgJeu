@@ -40,14 +40,14 @@ public class LightAnimController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (m_MC.grounded)
+        if (m_MC.isGrounded)
         {
-            if (Mathf.Abs(m_RB.velocity.x) > 0.3)
+            if (Mathf.Abs(m_RB.velocity.x) > 0.3f)
             {
                 state = PlayerAnimState.RUN;
             }
 
-            if (Mathf.Abs(m_RB.velocity.x) < 0.3 && m_RB.velocity.y == 0)
+            if (Mathf.Abs(m_RB.velocity.x) < 0.3f && m_RB.velocity.y <= 0.01f && !m_PC.isAttacking)
             {
                 state = Idle();
             }
@@ -57,12 +57,12 @@ public class LightAnimController : MonoBehaviour
             }
         }
 
-        if (m_RB.velocity.y > 0.01)
+        if (m_RB.velocity.y > 0.01f)
         {
             state = PlayerAnimState.JUMP;
         }
 
-        if (m_RB.velocity.y < -0.01)
+        if (m_RB.velocity.y < -0.01f)
         {
             state = PlayerAnimState.FALL;
         }

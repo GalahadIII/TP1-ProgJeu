@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     #region Attack
 
     public bool isAttacking;
+    private bool wantNextAttack;
     public int currentAttackStage;
     
     private string attack;
@@ -52,13 +53,14 @@ public class PlayerController : MonoBehaviour
     {
         // catch input
         attackInput = Input.GetButton("Fire1");
+        
 
         lastAttack -= Time.deltaTime;
     }
 
     private void FixedUpdate()
     {
-        if (attackInput || isAttacking)
+        if ((attackInput || isAttacking) && m_MC.isGrounded)
         {
             Attack();
         }
@@ -66,11 +68,25 @@ public class PlayerController : MonoBehaviour
 
     void Attack()
     {
+        if (isAttacking && attackInput && lastAttack > 0)
+        {
+            wantNextAttack = true;
+        }
+        
         if (!isAttacking)
         {
             isAttacking = true;
+            m_MC.movementLocked = true;
+        }
+
+        if (isAttacking && lastAttack <= 0.1)
+        {
+            isAttacking = false;
+            m_MC.movementLocked = false;
         }
         
+
+
         // if ((lastAttack < 0 && ++currentAttackStage == 3) || currentAttackStage == 3)
         // {
         //     currentAttackStage = 3;
@@ -93,10 +109,10 @@ public class PlayerController : MonoBehaviour
         
         if (lastAttack < -1f || currentAttackStage == 1 || (lastAttack < 0 && ++currentAttackStage == 4))
         {
-            currentAttackStage = 3;
+            currentAttackStage = 1;
             if (lastAttack <= 0)
             {
-                lastAttack = 1.1f;
+                lastAttack = 1f;
             }
             return;
         }

@@ -16,7 +16,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float decceleration = 6f;
     [SerializeField] private float velPower = 1.2f;
     [SerializeField] private float friction = 0.2f;
-    public bool movementLocked;
+    [SerializeField] public bool movementLocked;
 
     #endregion
 
@@ -37,7 +37,7 @@ public class MovementController : MonoBehaviour
     [Header("Checks")] private bool facingRight = true;
 
     [SerializeField] private LayerMask groundLayer;
-    public bool grounded { get; private set; }
+    public bool isGrounded { get; private set; }
     private bool jumping;
 
     #endregion
@@ -82,7 +82,7 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         // various checks
-        grounded = IsGrounded();
+        isGrounded = IsGrounded();
         
         if (jumping && m_RB.velocity.y <= 0)
         {
@@ -110,8 +110,6 @@ public class MovementController : MonoBehaviour
                 Jump();
             }
         }
-
-
     }
 
     // Fixed update is called for physics updates
@@ -156,8 +154,8 @@ public class MovementController : MonoBehaviour
         // apply force to rigidbody, multiplying by Vector2.Right sot it only affects X axis
         m_RB.AddForce(movement * Vector2.right);
 
-        // check if grounded
-        switch (grounded)
+        // check if isGrounded
+        switch (isGrounded)
         {
             // and not trying to stop
             case true when MathF.Abs(moveInput) < 0.01f:
