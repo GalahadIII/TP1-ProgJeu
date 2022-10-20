@@ -378,15 +378,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GUI_2
+      name: Arrow
       rect:
         serializedVersion: 2
-        x: 64
-        y: 49
-        width: 15
-        height: 14
+        x: 133
+        y: 262
+        width: 5
+        height: 6
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -453,7 +453,6 @@ TextureImporter:
     nameFileIdTable:
       GUI_74: 889234234
       GUI_26: 1434408141
-      GUI_2: 1533762167
       GUI_11: 450047333
       GUI_56: -732509107
       Menu_Horizontal: -376776586
@@ -538,6 +537,7 @@ TextureImporter:
       GUI_61: -1843717711
       GUI_76: -941416415
       GUI_0: 766366317
+      Arrow: 1533762167
       GUI_33: 2016167812
       GUI_90: -2023425177
       GUI_89: 70403847
