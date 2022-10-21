@@ -11,10 +11,12 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer m_LightSR;
     //private Animator m_DarkAnim;
     private Animator m_LightAnim;
-    
+
     private MovementController m_MC;
 
     private LightAnimController m_LightANIM;
+
+    private Collider2D WeaponCollider;
 
     #region Attack
 
@@ -43,7 +45,8 @@ public class PlayerController : MonoBehaviour
 
         m_LightAnim = lightChild.GetComponent<Animator>();
         //m_DarkAnim = darkChild.GetComponent<Animator>();
-
+        
+        
         m_MC = GetComponent<MovementController>();
         lastAttack = -1f;
     }
@@ -53,7 +56,6 @@ public class PlayerController : MonoBehaviour
     {
         // catch input
         attackInput = Input.GetButton("Fire1");
-        
 
         lastAttack -= Time.deltaTime;
     }
@@ -68,15 +70,15 @@ public class PlayerController : MonoBehaviour
 
     void Attack()
     {
-        if (isAttacking && attackInput && lastAttack > 0)
+        switch (isAttacking)
         {
-            wantNextAttack = true;
-        }
-        
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            m_MC.movementLocked = true;
+            case true when attackInput && lastAttack > 0:
+                wantNextAttack = true;
+                break;
+            case false:
+                isAttacking = true;
+                m_MC.movementLocked = true;
+                break;
         }
 
         if (isAttacking && lastAttack <= 0.1)
@@ -85,37 +87,23 @@ public class PlayerController : MonoBehaviour
             m_MC.movementLocked = false;
         }
         
-
-
-        // if ((lastAttack < 0 && ++currentAttackStage == 3) || currentAttackStage == 3)
-        // {
-        //     currentAttackStage = 3;
-        //     if (lastAttack <= 0)
-        //     {
-        //         lastAttack = 1.1f;
-        //     }
-        //     return;
-        // }
-        //
-        // if ((lastAttack < 0 && ++currentAttackStage == 2) || currentAttackStage == 2)
-        // {
-        //     currentAttackStage = 2;
-        //     if (lastAttack <= 0)
-        //     {
-        //         lastAttack = 1f;
-        //     }
-        //     return;
-        // }
-        
+        // TODO add attack combo
         if (lastAttack < -1f || currentAttackStage == 1 || (lastAttack < 0 && ++currentAttackStage == 4))
         {
             currentAttackStage = 1;
+            DealDamage(currentAttackStage);
             if (lastAttack <= 0)
             {
                 lastAttack = 1f;
             }
             return;
         }
+    }
+    
+    //private void ScanForItems<>()
+
+    private void DealDamage(int curentAttackStage)
+    {
         
     }
 }
