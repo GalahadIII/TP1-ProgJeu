@@ -28,15 +28,18 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float jumpBufferTime = 0.1f;
     [SerializeField] private float fallGravityMultiplier = 1.9f;
 
+    [SerializeField]private bool doubleJump;
     private float gravityScale;
 
     #endregion
 
     #region Checks
 
-    [Header("Checks")] private bool facingRight = true;
+    
 
+    [Header("Checks")] 
     [SerializeField] private LayerMask groundLayer;
+    public bool facingRight = true;
     public bool isGrounded { get; private set; }
     private bool jumping;
 
@@ -109,6 +112,10 @@ public class MovementController : MonoBehaviour
             {
                 Jump();
             }
+            else if (doubleJump)
+            {
+                SecondJump();
+            }
         }
     }
 
@@ -131,6 +138,7 @@ public class MovementController : MonoBehaviour
     {
         if (!Physics2D.OverlapCircle(transform.position + new Vector3(0.06f, -0.4f), 0.1f, groundLayer)) return false;
         lastGroundedTime = jumpCoyoteTime;
+        doubleJump = true;
         return true;
     }
 
@@ -178,6 +186,14 @@ public class MovementController : MonoBehaviour
         m_RB.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         // on jump actions
         jumping = true;
+    }
+
+    private void SecondJump()
+    {
+        m_RB.velocity = new Vector2(m_RB.velocity.x, 0);
+        m_RB.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        jumping = true;
+        doubleJump = false;
     }
 
     private void JumpInputUp()

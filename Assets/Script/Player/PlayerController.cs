@@ -11,17 +11,17 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer m_LightSR;
     //private Animator m_DarkAnim;
     private Animator m_LightAnim;
-
     private MovementController m_MC;
-
     private LightAnimController m_LightANIM;
+    [SerializeField]private PlayerWeapon weapon;
 
-    private Collider2D WeaponCollider;
+    public int goldCollected;
+
 
     #region Attack
 
     public bool isAttacking;
-    private bool wantNextAttack;
+    //private bool wantNextAttack;
     public int currentAttackStage;
     
     private string attack;
@@ -45,14 +45,13 @@ public class PlayerController : MonoBehaviour
 
         m_LightAnim = lightChild.GetComponent<Animator>();
         //m_DarkAnim = darkChild.GetComponent<Animator>();
-        
-        
+
         m_MC = GetComponent<MovementController>();
         lastAttack = -1f;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // catch input
         attackInput = Input.GetButton("Fire1");
@@ -68,12 +67,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Attack()
+    private void Attack()
     {
         switch (isAttacking)
         {
             case true when attackInput && lastAttack > 0:
-                wantNextAttack = true;
+                //wantNextAttack = true;
                 break;
             case false:
                 isAttacking = true;
@@ -91,19 +90,13 @@ public class PlayerController : MonoBehaviour
         if (lastAttack < -1f || currentAttackStage == 1 || (lastAttack < 0 && ++currentAttackStage == 4))
         {
             currentAttackStage = 1;
-            DealDamage(currentAttackStage);
             if (lastAttack <= 0)
             {
+                StartCoroutine(weapon.DealDamage());
                 lastAttack = 1f;
             }
             return;
         }
     }
     
-    //private void ScanForItems<>()
-
-    private void DealDamage(int curentAttackStage)
-    {
-        
-    }
 }
