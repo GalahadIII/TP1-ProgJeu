@@ -321,7 +321,7 @@ TextureImporter:
         x: 145
         y: 193
         width: 46
-        height: 14
+        height: 13
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -386,7 +386,7 @@ TextureImporter:
         width: 5
         height: 6
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -440,6 +440,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Button_LargeHover
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 177
+        width: 46
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9534645b06351d108b16b724b04e3761
+      internalID: 190289358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SideCenter
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 176
+        width: 6
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35c4eeb7a510558c99f72aa693b46662
+      internalID: 420989161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Center
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 176
+        width: 36
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08c655246358b3a91bcb193cfc1d7aa1
+      internalID: 2083717900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -458,6 +521,7 @@ TextureImporter:
       Menu_Horizontal: -376776586
       GUI_15: 116662343
       GUI_54: 998109918
+      SideCenter: 420989161
       GUI_75: -1219626626
       Menu_Center: -907584676
       GUI_47: 1667520932
@@ -505,8 +569,8 @@ TextureImporter:
       GUI_84: -1525659475
       GUI_18: -1330649706
       HealthBar: -887914195
+      GUI_4: 902970968
       GUI_73: 969513668
-      GUI_3: 622844795
       GUI_81: -80955290
       GUI_50: -1078773619
       GUI_44: 1816600216
@@ -514,6 +578,7 @@ TextureImporter:
       GUI_88: 910584857
       Menu_Corner: 763954603
       GUI_21: 808570993
+      Center: 622844795
       GUI_13: -320315124
       GUI_12: 590086626
       GUI_41: -1514487138
@@ -534,15 +599,16 @@ TextureImporter:
       GUI_42: -1367519237
       Bar_1: -1847991479
       GUI_79: -17646133
+      GUI_0: 766366317
       GUI_61: -1843717711
       GUI_76: -941416415
-      GUI_0: 766366317
       Arrow: 1533762167
       GUI_33: 2016167812
       GUI_90: -2023425177
       GUI_89: 70403847
       GUI_80: -478361048
       GUI_67: -18482053
+      Button_LargeHover: 190289358
       GUI_72: -1520712251
       GUI_51: -298207623
       GUI_69: -342539989

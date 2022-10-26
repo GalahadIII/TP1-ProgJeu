@@ -7,37 +7,48 @@ using UnityEngine;
 public class PlayerWeapon : MonoBehaviour
 {
     private CapsuleCollider2D attack1Zone;
-    private MovementController s_MC;
     private bool facingRight;
-    private int ATK1_DMG = 2;
+
+    [SerializeField]private List<KilleableEntity> enemiesInRange = new ();
+    
+    [SerializeField]private int ATK1_DMG = 2;
 
     // Start is called before the first frame update
     void Start()
     {
         attack1Zone = GetComponent<CapsuleCollider2D>();
-        s_MC = GetComponentInParent<MovementController>();
-        attack1Zone.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        facingRight = s_MC.facingRight;
     }
 
-    public IEnumerator DealDamage()
+    public void DealDamage()
     {
-        attack1Zone.enabled = true;
-        yield return new WaitForSeconds(0.1f);
-        attack1Zone.enabled = false;
-    }
-
-    private void OnTriggerEnter2D(Component col)
-    {
-        GameObject GameObj = col.gameObject;
-        if (GameObj.CompareTag("Enemy"))
+        foreach (KilleableEntity entity in enemiesInRange)
         {
-            GameObj.GetComponent<KilleableEntity>().TakeDamage(ATK1_DMG, facingRight);
+            entity.TakeDamage(ATK1_DMG);
         }
+    }
+
+    private void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.isTrigger) return;
+        KilleableEntity entity = col.gameObject.GetComponentInParent<KilleableEntity>();
+        if (!entity) return;
+        
+        if (entity.CompareTag("Enemy") && !enemiesInRange.Contains(entity))
+        {
+            enemiesInRange.Add(entity);
+        }
+    }
+    
+    private void OnTriggerExit2D(Collider2D col)
+    {
+        KilleableEntity entity = col.gameObject.GetComponentInParent<KilleableEntity>();
+        
+        enemiesInRange.Remove(entity);
+
     }
 }

@@ -7,11 +7,9 @@ public class KilleableEntity : MonoBehaviour
     
     public int hp; 
     public bool tookDamage;
-    public int knockbackDirection;
-    
-    public void TakeDamage(int damageTaken, bool facingRight)
+
+    public void TakeDamage(int damageTaken)
     {
-        knockbackDirection = facingRight ? 1 : -1;
         hp -= damageTaken;
         tookDamage = true;
     }

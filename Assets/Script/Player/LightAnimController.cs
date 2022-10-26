@@ -62,12 +62,12 @@ public class LightAnimController : MonoBehaviour
             state = PlayerAnimState.JUMP;
         }
 
-        if (m_RB.velocity.y < -0.01f)
+        if (m_RB.velocity.y < -0.01f && !m_MC.isGrounded)
         {
             state = PlayerAnimState.FALL;
         }
 
-        if (m_PC.isAttacking)
+        if (m_PC.isAttacking && m_MC.isGrounded)
         {
             state = m_PC.currentAttackStage switch
             {

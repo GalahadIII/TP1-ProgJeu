@@ -7,22 +7,20 @@ using UnityEngine.UI;
 public class PlayerInfo : MonoBehaviour
 {
     [SerializeField] private PlayerController s_PC;
+    [SerializeField] private KilleableEntity health;
+    [SerializeField] private Image healthBar;
+    [SerializeField] private Image shadowbar;
 
+    private int maxHp;
     private GameObject gold;
-    private GameObject bar1;
-    private GameObject bar2;
-
     private TextMeshProUGUI goldAmount;
-    private Image healthBar;
-    private Image shadowbar;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        bar1 = GameObject.Find("Bar1");
-        bar1 = GameObject.Find("Bar2");
+        maxHp = health.hp;
         gold = GameObject.Find("Gold");
-
         goldAmount = gold.GetComponentInChildren<TextMeshProUGUI>();
     }
 
@@ -30,5 +28,6 @@ public class PlayerInfo : MonoBehaviour
     void Update()
     {
         goldAmount.SetText(s_PC.goldCollected.ToString());
+        healthBar.fillAmount = health.hp * 0.1f;
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MovementController : MonoBehaviour
@@ -17,6 +18,8 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float velPower = 1.2f;
     [SerializeField] private float friction = 0.2f;
     [SerializeField] public bool movementLocked;
+
+    private float m_collidingFriction;
 
     #endregion
 
@@ -154,6 +157,14 @@ public class MovementController : MonoBehaviour
         // calculate difference between current volocity and target velocity
         float speedDif = targetSpeed - m_RB.velocity.x;
         // change acceleration rate depending on situations;
+        if (m_collidingFriction < 0.4)
+        {
+            decceleration = 0f;
+        }
+        else
+        {
+            decceleration = 6f;
+        }
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
         // applies acceleration to speed difference, raise to a set power so acceleration increase with higher speed
         // multiply by sign to reapply direction
@@ -163,7 +174,7 @@ public class MovementController : MonoBehaviour
         m_RB.AddForce(movement * Vector2.right);
 
         // check if isGrounded
-        switch (isGrounded)
+        switch (isGrounded && m_collidingFriction >= 0.4f)
         {
             // and not trying to stop
             case true when MathF.Abs(moveInput) < 0.01f:
@@ -201,7 +212,7 @@ public class MovementController : MonoBehaviour
         if (m_RB.velocity.y > 0 && jumping)
         {
             // reduces current y velocity by amount[0-1] (higher the CutMultiplier the less sensitive to input it becomes)
-            m_RB.AddForce(Vector2.down * m_RB.velocity.y * (1 - jumpCutMultiplier), ForceMode2D.Impulse);
+            m_RB.AddForce(Vector2.down * (m_RB.velocity.y * (1 - jumpCutMultiplier)), ForceMode2D.Impulse);
         }
     }
 
@@ -215,5 +226,10 @@ public class MovementController : MonoBehaviour
         {
             m_RB.gravityScale = gravityScale;
         }
+    }
+
+    private void OnCollisionStay2D(Collision2D col)
+    {
+        m_collidingFriction = col.collider.friction;
     }
 }

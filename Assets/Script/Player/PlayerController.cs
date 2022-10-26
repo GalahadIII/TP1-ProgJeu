@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private MovementController m_MC;
     private LightAnimController m_LightANIM;
     [SerializeField]private PlayerWeapon weapon;
+    [SerializeField] private Canvas deathMenu;
 
     public int goldCollected;
 
@@ -28,11 +29,13 @@ public class PlayerController : MonoBehaviour
     private bool attackInput;
     private int nextAttackStage;
     private float lastAttack;
+    private KilleableEntity hp;
 
     #endregion
     
     void Awake()
     {
+        Time.timeScale = 1;
         lightChild = GameObject.Find("Light");
         //darkChild = GameObject.Find("Dark");
     }
@@ -40,6 +43,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        hp = GetComponent<KilleableEntity>();
+        
         m_LightSR = lightChild.GetComponent<SpriteRenderer>();
         //m_DarkSR = darkChild.GetComponent<SpriteRenderer>();
 
@@ -53,6 +58,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (hp.hp <= 0)
+        {
+            Die();
+        }
+        
         // catch input
         attackInput = Input.GetButton("Fire1");
 
@@ -92,11 +102,23 @@ public class PlayerController : MonoBehaviour
             currentAttackStage = 1;
             if (lastAttack <= 0)
             {
-                StartCoroutine(weapon.DealDamage());
+                Invoke(nameof(CallWeapon), 0.1f);
                 lastAttack = 1f;
             }
             return;
         }
+    }
+
+    private void CallWeapon()
+    {
+        weapon.DealDamage();
+    }
+
+    private void Die()
+    {
+        DestroyImmediate(this);
+        deathMenu.enabled = true;
+        Time.timeScale = 0;
     }
     
 }

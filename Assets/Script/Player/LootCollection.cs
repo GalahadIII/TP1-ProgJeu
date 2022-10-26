@@ -13,13 +13,25 @@ public class LootCollection : MonoBehaviour
         player = GetComponentInParent<PlayerController>();
     }
 
-    private void OnTriggerEnter2D(Component col)
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        PickUpCoin(col);
+    }
+    
+    private void OnTriggerStay2D(Collider2D col)
+    {
+        PickUpCoin(col);
+    }
+
+    private void PickUpCoin(Collider2D col)
     {
         if (col.gameObject.CompareTag("Coin"))
         {
-            player.goldCollected += 1;
-            Destroy(col.gameObject);
+            if (col.gameObject.GetComponent<Items>().collectable)
+            {
+                player.goldCollected += 1;
+                Destroy(col.gameObject);
+            }
         }
-        
     }
 }
