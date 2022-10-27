@@ -14,8 +14,3 @@
     Tp1 du cours de programmation de jeu
   </p>
 </div>
-
-
-
-### Sources
-https://dani-maccari.itch.io/platformer-metroidvania-pixel-items-free-assets
