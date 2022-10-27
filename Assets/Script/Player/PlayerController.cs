@@ -114,9 +114,9 @@ public class PlayerController : MonoBehaviour
         weapon.DealDamage();
     }
 
-    private void Die()
+    public void Die()
     {
-        DestroyImmediate(this);
+        Destroy(this);
         deathMenu.enabled = true;
         Time.timeScale = 0;
     }
